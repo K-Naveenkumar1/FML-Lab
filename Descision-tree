@@ -1,0 +1,30 @@
+import sys
+import matplotlib
+matplotlib.use('Agg')
+import pandas as pd
+from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv("/content/data.csv")
+
+# Map string data to integers
+d_nationality = {'UK': 0, 'USA': 1, 'N': 2}
+df['Nationality'] = df['Nationality'].map(d_nationality)
+d_go = {'YES': 1, 'NO': 0}
+df['Go'] = df['Go'].map(d_go)
+
+# Define features and target
+features = ['Age', 'Experience', 'Rank', 'Nationality']
+X = df[features]
+y = df['Go']
+
+# Train the decision tree classifier
+clf = DecisionTreeClassifier()
+clf = clf.fit(X, y)
+
+# Plot the decision tree
+plt.figure(figsize=(20,10))
+tree.plot_tree(clf, feature_names=features, class_names=['No', 'Yes'], filled=True)
+plt.savefig('decision_tree.png')
